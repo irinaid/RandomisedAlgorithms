@@ -73,13 +73,13 @@ public:
 
     //DUMP FUNCTION
     void dump(char sep = '\n');
-	
-    int elements;
 
+    int elements;
+    unsigned int m_maxHeight;
 
 private:
     SkipListNode* m_head;
-    unsigned int m_maxHeight;
+
 };
 
 #endif /*SKIPLIST_HPP_*/

@@ -112,43 +112,30 @@ unsigned int SkipList::randHeight() {
 
 
 int SkipList::add(SkipListNode* target, SkipListNode* newNode, unsigned int level) {
-
     if (target->nextAtLevel(level) != NULL &&
             (*target->nextAtLevel(level)) < *newNode) {
         countAdd++;
     }
     ////////////// Write your code below  ////////////////////////
-    SkipListNode *t = target->nextAtLevel(level);
-    if (t == NULL || newNode < t) {
-        if (level < newNode->height()) {
-            newNode->setNextAtLevel(level, t);
-            target->setNextAtLevel(level, newNode);
-        }
-        if(level) {add(target, newNode, --level);}
-        return 1;
-    }
-    return add(t,newNode,level);
+
+
+
+    return 0;  //you have to replace this line with your own.
 }
 
 /////////////////////////////////////////////////////////////
 /////////////////////  FIND FUNCTION ////////////////////////
 /////////////////////////////////////////////////////////////
 SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int level) {
-
     if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) < key) {
         countFind++;
     }
     ////////////// Write your code below  ////////////////////////
-    if (target == NULL) {return NULL;}
-    if (dynamic_cast<Key&>(*target) == key) {return target;}
-    SkipListNode *t = target->nextAtLevel(level);
 
-    if (t == NULL || key < dynamic_cast<Key&>(*t)) {
-        if (!level) {return NULL;}
-        return find(target, key, --level);
-    }
 
-    return find(t,key,level);
+
+
+    return target;
 }
 
 

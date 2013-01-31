@@ -33,7 +33,7 @@ const string delcount = "echo 'set output \"delcounter.ps\"; ";
 const string deltime = "echo 'set output \"deltimer.ps\"; ";
 const string echoFind = "echo 'set output \"findcounter.ps\"; ";
 const string echoFindTime = "echo 'set output \"findtimer.ps\"; ";
-     
+
 unsigned long long microseconds() {
   struct timeval tv;
   struct timezone tz;
@@ -99,6 +99,7 @@ int loadDictionary(char *name, vector<string> &words) {
 }
 
 int main(int argc, char* argv[]) {
+
   if (argc != 3) {
     cout<<"Program requires a dictionary file ";
     cout<<" and a string specify the container to test"<<endl;
@@ -107,7 +108,7 @@ int main(int argc, char* argv[]) {
     <<"r randomized binary search tree."<<endl;
     return 0;
   }
-  
+
   string gnuPSPlotCount = psColor +"set title \"Sample Counter\";"
                           +setxlabel+setylabelCount+"plot";
   string gnuPSPlotTime = psColor + "set title \"Sample Timer\";"
@@ -137,7 +138,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  
+
 
   int columnCount=2;
   if (plotList) {
@@ -150,7 +151,7 @@ int main(int argc, char* argv[]) {
       gnuPSPlotTime+=',';
     }
     gnuPSPlotTime += timeL + stringFrom<int>(columnCount)+lSkip;
-                     
+
     if (columnCount >2) {
       gnuScreenPlotCount+=',';
     }
@@ -159,7 +160,7 @@ int main(int argc, char* argv[]) {
       gnuScreenPlotTime+=',';
     }
      gnuScreenPlotTime += timeL + stringFrom<int>(columnCount)+lSkip;
-    
+
     columnCount++;
   }
   if (plotBF) {
@@ -228,7 +229,6 @@ int main(int argc, char* argv[]) {
   while (command != "q" && command != "quit") {
     cout<<"What would you like to do? (add/delete/find/quit) ";
     cin>>command;
-
     bool error = false;
     ofstream counteroutput("counter.dat");
     ofstream timeroutput("timer.dat");
@@ -308,10 +308,10 @@ int main(int argc, char* argv[]) {
             counteroutput << " "<< testRBSTCount/NUM_TRIALS/binSize ;
             timeroutput << " "<< outlierDeletedMean(testRBSTTimes)/binSize;
            }
-  
+
           counteroutput << endl;
           timeroutput   << endl;
- 
+
           binSize = 1;
 
           for (unsigned int t=0; t <NUM_TRIALS ; t++) {
@@ -426,9 +426,9 @@ int main(int argc, char* argv[]) {
 
         if (testNum <= NUM_BINS || i%(testNum/NUM_BINS) == 0 ) {
           int counter =testNum - i-1;
-          counteroutput << counter; 
+          counteroutput << counter;
           timeroutput << counter ;
-          
+
         if (plotList) {
             counteroutput <<" "<< testListCount/NUM_TRIALS/binSize ;
             timeroutput  <<" "<< outlierDeletedMean(testListTimes)/binSize;
@@ -554,15 +554,19 @@ int main(int argc, char* argv[]) {
           }
           counteroutput << endl;
           timeroutput   << endl;
-   
-  
+
+
           binSize = 1;
 
+           int max = 0 ;
           for (unsigned int t=0; t <NUM_TRIALS ; t++) {
+              if (max < testList[t]->m_maxHeight) max = testList[t]->m_maxHeight;
             testList[t]->resetCountFind();
             testBF[t]->resetCountFind();
             testRBST[t]->resetCountFind();
           }
+
+          cout << "Max height " << max << "\n";
 
           testListTimes.assign(NUM_TRIALS,0);
           testBFTimes.assign(NUM_TRIALS,0);
@@ -573,7 +577,7 @@ int main(int argc, char* argv[]) {
         }
       }
       cout<<endl;
-        
+
       system ((echoFind + gnuPSPlotCount).c_str());
       system ((echoFindTime + gnuPSPlotTime).c_str());
 
