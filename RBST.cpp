@@ -95,7 +95,11 @@ RBSTNode*  RBST::leftRotate(RBSTNode* target) {
 RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-
+    RBSTNode *newNode = new RBSTNode(key);
+    if (!target) return newNode;
+    if (key < dynamic_cast<Key&>(*target)) {
+		//setleft(target)
+	}
 
 
     return target;
