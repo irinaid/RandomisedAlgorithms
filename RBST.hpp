@@ -5,6 +5,8 @@
 #include <assert.h>
 #include <vector>
 #include <math.h>
+#include <cstring>
+#include <stdlib.h>
 #include "Key.hpp"
 #include "DataStructure.hpp"
 
@@ -19,7 +21,7 @@ public:
     string getKey() {
         return *this;
     }
- 
+
     string setKey(const Key& key) {
         assign(key);
         return Key(key);
@@ -55,7 +57,7 @@ public:
 
     //ADD FUNCTIONS
     int add(const Key& key, bool verbose=false);
-    
+
     //FIND FUNCTIONS
     int find(const Key& key, bool verbose = false);
 

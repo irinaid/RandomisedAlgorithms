@@ -123,16 +123,16 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
 
-    int cmp = strcmp(target,key);
+    int cmp = strcmp(target->c_str(),key.c_str());
     if(!cmp) {
         return target;
     }
     if(cmp>0) { //target bigger than key
-        if(rarget->left() == NULL) {return NULL;}
+        if(target->left() == NULL) {return NULL;}
         return find(target->left(), key);
     }
     if(cmp<0) { //target lesser than key
-        if(rarget->right() == NULL) {return NULL;}
+        if(target->right() == NULL) {return NULL;}
         return find(target->right(), key);
     }
 
@@ -150,9 +150,69 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
 
+    RBSTNode *parent = NULL;
+    RBSTNode *n = target;
 
+    int dir = 0;
 
+    while (1) {
+        int cmp = strcmp(n->c_str(),key.c_str());
+        if(!cmp) {
+            break;
+        }
+        dir = cmp;
+        if(cmp>0) { //target bigger than key
+            parent = n;
+            n = target->left();
+            if(n == NULL) {return NULL;}
+        }
+        if(cmp<0) { //target lesser than key
+            parent = n;
+            n = target->right();
+            if(n == NULL) {return NULL;}
+        }
+    }
 
-    return target;
+    if(n==NULL) {return NULL;}
+
+    if(target->left()!=NULL&&target->right()!=NULL) {
+        //Both left and right.
+        if(rand()&1) {
+            //Swap left
+            leftRotate(n);
+            return del(n, key);
+        } else {
+            //Swap right
+            rightRotate(n);
+            return del(n, key);
+        }
+    } else {
+        if(target->left()!=NULL || target->right()!=NULL) {
+            //Has one node:
+            if(target->left()!=NULL) {
+                if(dir>0) {
+                    parent->setLeft(target->left());
+                } else {
+                    parent->setRight(target->left());
+                }
+                return n;
+            } else {
+                if(dir>0) {
+                    parent->setLeft(target->right());
+                } else {
+                    parent->setRight(target->right());
+                }
+                return n;
+            }
+        } else {
+            if(dir>0) {
+                parent->setLeft(NULL);
+            } else {
+                parent->setRight(NULL);
+            }
+            return n;
+        }
+    }
+
 };
 
