@@ -160,7 +160,8 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
         countDelete++;
     }
     ////////////// Write your code below  ////////////////////////
+    SkipListNode *n = find(target, key, level);
 
 
-    return NULL; ///you have to replace this line with your own.
+    return n; ///you have to replace this line with your own.
 }

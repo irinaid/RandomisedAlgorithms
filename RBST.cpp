@@ -123,6 +123,16 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
 
+    int cmp = strcmp(target,key);
+    if(!cmp) {
+        return target;
+    }
+    if(cmp>0) { //target bigger than key
+        return find(target->left(), key);
+    }
+    if(cmp<0) { //target lesser than key
+        return find(target->right(), key);
+    }
 
 
     return target;
