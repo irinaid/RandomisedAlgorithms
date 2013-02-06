@@ -80,16 +80,23 @@ void BloomFilter::dump() {
 void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-    //b[h[1](x)] = 1
-    // b is m_tickBook, m is m_length
-    //b[h[2](x)] = 1 =
 
+	//Find the right pocket
+	int p1 = hash1(key) % m_length / m_pocketSize;
+	int p2 = hash2(key) % m_length / m_pocketSize;
 
-  //  m_tickBook[hash1(key)%m_length] = 1;
-//    m_tickBook[hash2(key)] = 1;
+	//Find the right bit in the pocket
+	int b1 = p1 % m_pocketSize;
+	int b2 = p2 % m_pocketSize;
 
+	int mask1 = 1; 
+	mask1 <<= b1; 
 
-std::cout<<"KEY " << m_tickBook[hash1(key)] << "\nHASH 1 " << hash1(key) << "\nHASH 2 " << hash2(key) << "\n\n";
+	int mask2 = 1;
+	mask2 <<= b2;
+
+	m_tickBook[p1] |= mask1;
+	m_tickBook[p2] |= mask2;
 
 }
 
@@ -102,9 +109,24 @@ std::cout<<"KEY " << m_tickBook[hash1(key)] << "\nHASH 1 " << hash1(key) << "\nH
 bool BloomFilter::exist(const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
- //   int h1 = m_tickBook[hash1(key)];
- //   int h2 = m_tickBook[hash2(key)];
-return false;
+    //Find the right pocket
+	int p1 = hash1(key) % m_length / m_pocketSize;
+	int p2 = hash2(key) % m_length / m_pocketSize;
+
+	//Find the right bit in the pocket
+	int b1 = p1 % m_pocketSize;
+	int b2 = p2 % m_pocketSize;
+
+	int mask1 = 1; 
+	mask1 <<= b1; 
+
+	int mask2 = 1;
+	mask2 <<= b2;
+
+	b1 = m_tickBook[p1] & mask1;
+	b2 = m_tickBook[p2] & mask2;
+
+	return b1 && b2;
 }
 
 
@@ -115,7 +137,21 @@ return false;
 void BloomFilter::del(const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
+    //Find the right bit in the pocket
+	int p1 = hash1(key) % m_length / m_pocketSize;
+	int p2 = hash2(key) % m_length / m_pocketSize;
 
+	int b1 = p1 % m_pocketSize;
+	int b2 = p2 % m_pocketSize;
+
+	int mask1 = 1; 
+	mask1 <<= b1; 
+
+	int mask2 = 1;
+	mask2 <<= b2;
+
+	m_tickBook[p1] &= ~mask1;
+	m_tickBook[p2] &= ~mask2;
 
 }
 
