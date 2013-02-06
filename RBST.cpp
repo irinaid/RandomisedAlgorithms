@@ -128,14 +128,16 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
         return target;
     }
     if(cmp>0) { //target bigger than key
+        if(rarget->left() == NULL) {return NULL;}
         return find(target->left(), key);
     }
     if(cmp<0) { //target lesser than key
+        if(rarget->right() == NULL) {return NULL;}
         return find(target->right(), key);
     }
 
 
-    return target;
+    return NULL;
 }
 
 
