@@ -5,8 +5,12 @@
 #include <assert.h>
 #include <vector>
 #include <math.h>
+#include <string.h>
+#include <math.h>
+#include <cstdlib>
 #include "Key.hpp"
 #include "DataStructure.hpp"
+
 
 using namespace std;
 
@@ -40,7 +44,6 @@ public:
         m_right =right;
         return this;
     }
-
 private:
     RBSTNode() {}
     RBSTNode* m_left;

@@ -101,10 +101,12 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
     RBSTNode *newNode = new RBSTNode(key);
     if (!target) return newNode;
     if (key < dynamic_cast<Key&>(*target)) {
-		//setleft(target)
+		target->setLeft(addRoot(target->left(), key));
+		return rightRotate(target);
+	} else {
+		target->setRight(addRoot(target->right(), key));
+		return leftRotate(target);
 	}
-
-
     return target;
 };
 
@@ -112,12 +114,21 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-
-
-
+	RBSTNode *newNode = new RBSTNode(key);
+    if (!target) return newNode;
+	int r = rand() % (m_size - 1) + 1;
+	if (r == 1) {
+		m_size++;
+		return addRoot(target, key);
+	}	
+	if (key < dynamic_cast<Key&>(*target)) {
+		target->setLeft(randomAdd(target->left(), key));
+	} else {
+		target->setRight(randomAdd(target->right(), key));
+	}
+    m_size++;
     return target;
 };
-
 
 /////////////////////////////////////////////////////////////
 /////////////////////  FIND FUNCTIONS ///////////////////////
@@ -126,7 +137,7 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
-
+/*
     int cmp = strcmp(target,key);
     if(!cmp) {
         return target;
@@ -138,7 +149,7 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
         return find(target->right(), key);
     }
 
-
+*/
     return target;
 }
 
