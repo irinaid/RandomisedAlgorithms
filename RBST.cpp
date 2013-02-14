@@ -116,9 +116,10 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     ////////////// Write your code below  ////////////////////////
 	RBSTNode *newNode = new RBSTNode(key);
     if (!target) return newNode;
-	int r = rand() % (m_size - 1) + 1;
+	int r = rand() % (target->getNodeSize() - 1) + 1;
 	if (r == 1) {
-		m_size++;
+		//here we should increase the size of newNode,
+                //but I'm not sure if it's still necessary
 		return addRoot(target, key);
 	}	
 	if (key < dynamic_cast<Key&>(*target)) {
@@ -126,7 +127,8 @@ RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
 	} else {
 		target->setRight(randomAdd(target->right(), key));
 	}
-    m_size++;
+    //m_size++;
+    //not sure if the above should be replace or deleted
     return target;
 };
 

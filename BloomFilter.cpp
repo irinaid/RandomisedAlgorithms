@@ -80,7 +80,6 @@ void BloomFilter::dump() {
 void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-
 	//Find the right pocket
 	int p1 = hash1(key) % m_length / m_pocketSize;
 	int p2 = hash2(key) % m_length / m_pocketSize;
@@ -94,6 +93,7 @@ void BloomFilter::add(const Key& key) {
 
 	int mask2 = 1;
 	mask2 <<= b2;
+
 
 	m_tickBook[p1] |= mask1;
 	m_tickBook[p2] |= mask2;
@@ -154,5 +154,4 @@ void BloomFilter::del(const Key& key) {
 	m_tickBook[p2] &= ~mask2;
 
 }
-
 
