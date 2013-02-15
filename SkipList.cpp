@@ -161,6 +161,7 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
     }
     ////////////// Write your code below  ////////////////////////
     SkipListNode *n = find(target, key, level);
+//return n;
     if (n == NULL)
         return n;
     if (n->nextAtLevel(level) == NULL) {
