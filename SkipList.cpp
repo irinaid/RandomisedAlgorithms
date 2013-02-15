@@ -161,7 +161,26 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
     }
     ////////////// Write your code below  ////////////////////////
     SkipListNode *n = find(target, key, level);
-
-
-    return n; ///you have to replace this line with your own.
+    if (n == NULL)
+        return;
+    if (n->nextAtLevel(level) == NULL) {
+        if (l > 0) {
+			del(target, key, level-1);
+			return;
+		}
+	}
+	if (dynamic_cast<Key&>(*n) >= key) {
+		if (dynamic_cast<Key&>(*n) == key) {
+			target->setNextAtLevel(level, n->nextAtLevel(level));
+			if (level == 0) {
+				delete(key, true);
+				return;
+			}
+		} else if (level == 0) {
+			return;
+		}
+		del(target, key, level-1);
+	} else {
+		del(target->nextAtLevel(level) , k, level);
+	}
 }
