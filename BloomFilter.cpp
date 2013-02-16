@@ -81,17 +81,17 @@ void BloomFilter::add(const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
 	//Find the right pocket
-	int p1 = hash1(key) % m_length / m_pocketSize;
-	int p2 = hash2(key) % m_length / m_pocketSize;
+	unsigned long p1 = hash1(key) % m_length / m_pocketSize;
+	unsigned long p2 = hash2(key) % m_length / m_pocketSize;
 
 	//Find the right bit in the pocket
-	int b1 = p1 % m_pocketSize;
-	int b2 = p2 % m_pocketSize;
+	unsigned long b1 = p1 % m_pocketSize;
+	unsigned long b2 = p2 % m_pocketSize;
 
-	int mask1 = 1; 
+	unsigned long mask1 = 1; 
 	mask1 <<= b1; 
 
-	int mask2 = 1;
+	unsigned long mask2 = 1;
 	mask2 <<= b2;
 
 
@@ -110,17 +110,17 @@ bool BloomFilter::exist(const Key& key) {
     countFind++;
     ////////////// Write your code below  ////////////////////////
     //Find the right pocket
-	int p1 = hash1(key) % m_length / m_pocketSize;
-	int p2 = hash2(key) % m_length / m_pocketSize;
+	unsigned long p1 = hash1(key) % m_length / m_pocketSize;
+	unsigned long p2 = hash2(key) % m_length / m_pocketSize;
 
 	//Find the right bit in the pocket
-	int b1 = p1 % m_pocketSize;
-	int b2 = p2 % m_pocketSize;
+	unsigned long b1 = p1 % m_pocketSize;
+	unsigned long b2 = p2 % m_pocketSize;
 
-	int mask1 = 1; 
+	unsigned long mask1 = 1; 
 	mask1 <<= b1; 
 
-	int mask2 = 1;
+	unsigned long mask2 = 1;
 	mask2 <<= b2;
 
 	b1 = m_tickBook[p1] & mask1;
@@ -138,16 +138,16 @@ void BloomFilter::del(const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
     //Find the right bit in the pocket
-	int p1 = hash1(key) % m_length / m_pocketSize;
-	int p2 = hash2(key) % m_length / m_pocketSize;
+	unsigned long p1 = hash1(key) % m_length / m_pocketSize;
+	unsigned long p2 = hash2(key) % m_length / m_pocketSize;
 
-	int b1 = p1 % m_pocketSize;
-	int b2 = p2 % m_pocketSize;
+	unsigned long b1 = p1 % m_pocketSize;
+	unsigned long b2 = p2 % m_pocketSize;
 
-	int mask1 = 1; 
+	unsigned long mask1 = 1; 
 	mask1 <<= b1; 
 
-	int mask2 = 1;
+	unsigned long mask2 = 1;
 	mask2 <<= b2;
 
 //	m_tickBook[p1] &= ~mask1;
