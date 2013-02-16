@@ -166,23 +166,20 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
 	SkipListNode *n = target->nextAtLevel(level);
 	if (n == NULL) {
 		if (level > 0) { 
-			return del(target, key, level-1);
+			return NULL; //del(target, key, level-1);
 		} 
-	}
+		return del(target, key, level-1);
+	} //ok
 
-	if (dynamic_cast<Key&>(*n) >= key) {
+
 		if (dynamic_cast<Key&>(*n) == key) {
 			target->setNextAtLevel(level, n->nextAtLevel(level));
-			if (level == 0) {
-				target->setNextAtLevel(level,n->nextAtLevel(level)); 
-				return target;
+			if (level > 0) {
+				return del(target, key, level-1);
 			}
-		} else if (level == 0) {
-				return target;
+			return n;
 		}
-		return del(target, key, level-1);
-	} else {
 		return del(target->nextAtLevel(level), key, level);
-	}
+
 
 }
