@@ -114,22 +114,62 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
+
 	RBSTNode *newNode = new RBSTNode(key);
-    if (!target) return newNode;
+
+    if (!target) {
+        ++m_size;
+        return newNode;
+    }
+
+	if (key == dynamic_cast<Key&>(*target)) {
+        //Already in here!
+        return target;
+	}
+
+	if (key < dynamic_cast<Key&>(*target)) {
+        //Left side of the tree
+        //Find out if we want to insert here:
+        ++target->n_left;
+        if(rand() % target->n_left == 0) {
+            //Insert as this root:
+            return addRoot(target, key);
+        }
+        else
+        {
+            target->setLeft(randomAdd(target->m_left, key));
+            return target;
+        }
+	}
+	else
+    {
+        ++target->n_right;
+        if(rand() % target->n_right == 0) {
+            //Insert as this root:
+            return addRoot(target, key);
+        }
+        else
+        {
+            target->setRight(randomAdd(target->m_left, key));
+            return target;
+        }
+    }
+
 	/*int r = rand() % (target->getNodeSize() - 1) + 1;
+
 	if (r == 1) {
 		//here we should increase the size of newNode,
                 //but I'm not sure if it's still necessary
 		return addRoot(target, key);
-	}	
+	}
 	if (key < dynamic_cast<Key&>(*target)) {
 		target->setLeft(randomAdd(target->left(), key));
 	} else {
 		target->setRight(randomAdd(target->right(), key));
-	}*/
+	}
     //m_size++;
     //not sure if the above should be replace or deleted
-    return target;
+    return target;*/
 };
 
 /////////////////////////////////////////////////////////////
@@ -165,14 +205,14 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
-
+/*
     RBSTNode *parent = NULL;
     RBSTNode *n = target;
 
     int dir = 0;
 
     while (1) {
-        int cmp = strcmp(n->c_str(),key.c_str());
+        int cmp = strcmp(n->c_str(),key.c_str()); //TODO
         if(!cmp) {
             break;
         }
@@ -229,6 +269,12 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
             return n;
         }
     }
-
+*/
 };
 
+int main(void) {
+  RBST *n = new RBST(10);
+  n->add("Test1",true);
+  n->add("Test2",true);
+  n->add("Test3",true);
+}
