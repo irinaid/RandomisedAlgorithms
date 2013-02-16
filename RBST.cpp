@@ -165,14 +165,14 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
-
+/*
     RBSTNode *parent = NULL;
     RBSTNode *n = target;
 
     int dir = 0;
 
     while (1) {
-        int cmp = strcmp(n->c_str(),key.c_str());
+        int cmp = strcmp(n->c_str(),key.c_str()); //TODO
         if(!cmp) {
             break;
         }
@@ -229,6 +229,6 @@ RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
             return n;
         }
     }
-
+*/
 };
 

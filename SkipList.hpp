@@ -57,7 +57,6 @@ public:
     virtual ~SkipList();
     void init(int maxHeight);
 
-
     // ADD FUNCTIONS
     int add(const Key& key, bool verbose=false);
     unsigned int randHeight();
