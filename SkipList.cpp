@@ -124,7 +124,7 @@ int SkipList::add(SkipListNode* target, SkipListNode* newNode, unsigned int leve
             newNode->setNextAtLevel(level, t);
             target->setNextAtLevel(level, newNode);
         }
-        if(level) {add(target, newNode, --level);}
+        if(level) {add(target, newNode, level-1);}
         return 1;
     }
     return add(t,newNode,level);
@@ -141,11 +141,12 @@ SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int 
     ////////////// Write your code below  ////////////////////////
     if (target == NULL) {return NULL;}
     if (dynamic_cast<Key&>(*target) == key) {return target;}
-    SkipListNode *t = target->nextAtLevel(level);
+    if (level >= 0 && level < m_links.size())
+    	SkipListNode *t = target->nextAtLevel(level);
 
     if (t == NULL || key < dynamic_cast<Key&>(*t)) {
-        if (!level) {return NULL;}
-        return find(target, key, --level);
+        if (level==0) {return NULL;}
+        return find(target, key, level-1);
     }
 
     return find(t,key,level);

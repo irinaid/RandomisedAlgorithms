@@ -150,8 +150,8 @@ void BloomFilter::del(const Key& key) {
 	int mask2 = 1;
 	mask2 <<= b2;
 
-	m_tickBook[p1] &= ~mask1;
-	m_tickBook[p2] &= ~mask2;
+//	m_tickBook[p1] &= ~mask1;
+//	m_tickBook[p2] &= ~mask2;
 
 }
 
