@@ -157,11 +157,11 @@ SkipListNode* SkipList::find(SkipListNode* target, const Key& key, unsigned int 
 /////////////////////  DEL FUNCTION ////////////////////////
 /////////////////////////////////////////////////////////////
 SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int level) {
-    if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level)) 
+    if (target->nextAtLevel(level) != NULL && *(target->nextAtLevel(level))
 		< key) {
         countDelete++;
     }
-	////////////// Write your code below  ////////////////////////
+/*	////////////// Write your code below  ////////////////////////
     if (target == NULL) return NULL;
 	SkipListNode *x = target->nextAtLevel(level);
 	//if next node is null go down one level or end reached 
@@ -188,5 +188,35 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
 	//if the key is bigger than the node try the next node
 	else if (level == 0) return NULL;
 	return del(x, key, level);
+    
+*/
+    ////////////// Write your code below  ////////////////////////
 
+    SkipListNode *n = target->nextAtLevel(level);
+    if (n == NULL) {
+        if (level > 0) {
+            return del(target,key,level-1);
+        }
+        return NULL;
+    }
+
+	if (dynamic_cast<Key&>(*n) >= key) {
+        if (dynamic_cast<Key&>(*n) == key) {
+            if (level == 0) {
+                target->setNextAtLevel(level,n->nextAtLevel(level));
+                return n;
+            }
+        }
+        else
+        {
+            if (level == 0) {
+                return n;
+            }
+        }
+        del(target,key,level-1);
+	}
+	else
+	{
+	    del(target->nextAtLevel(level),key,level);
+	}
 }

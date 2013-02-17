@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <vector>
 #include <math.h>
+#include <stdlib.h>
 #include "Key.hpp"
 #include "DataStructure.hpp"
 
@@ -18,16 +19,16 @@ public:
     virtual ~BloomFilter() {}
 
     void init(unsigned long length);
-    
+
     // ADD FUNCTIONS
     void add(const Key& key);
-    
+
     // FIND FUNCTIONS
     int testExist(const Key& key, bool verbose = false);
-    
+
     //DEL FUNCTIONS
     void del(const Key& key);
-    
+
     //DUMP FUNCTION
     void dump();
 

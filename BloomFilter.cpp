@@ -78,22 +78,21 @@ void BloomFilter::dump() {
 /////////////////////////////////////////////////////////////
 
 void BloomFilter::add(const Key& key) {
-    countAdd++;
-    ////////////// Write your code below  ////////////////////////
+  countAdd++;
+  ////////////// Write your code below  ////////////////////////
 	//Find the right pocket
-	unsigned int p1 = hash1(key) % m_length / m_pocketSize;
-	unsigned int p2 = hash2(key) % m_length / m_pocketSize;
+  unsigned int h1 = hash1(key) % m_length;
+  unsigned int h2 = hash2(key) % m_length;
+
+	unsigned int p1 = h1 / m_pocketSize;
+	unsigned int p2 = h2 / m_pocketSize;
 
 	//Find the right bit in the pocket
-	unsigned int b1 = p1 % m_pocketSize;
-	unsigned int b2 = p2 % m_pocketSize;
+	unsigned int b1 = h1 % m_pocketSize;
+	unsigned int b2 = h2 % m_pocketSize;
 
-	unsigned int mask1 = 1; 
-	mask1 <<= b1; 
-
-	unsigned int mask2 = 1;
-	mask2 <<= b2;
-
+	unsigned int mask1 = 1 << b1;
+	unsigned int mask2 = 1 << b2;
 
 	m_tickBook[p1] |= mask1;
 	m_tickBook[p2] |= mask2;
@@ -107,21 +106,21 @@ void BloomFilter::add(const Key& key) {
 
 
 bool BloomFilter::exist(const Key& key) {
-    countFind++;
-    ////////////// Write your code below  ////////////////////////
-    //Find the right pocket
-	unsigned int p1 = hash1(key) % m_length / m_pocketSize;
-	unsigned int p2 = hash2(key) % m_length / m_pocketSize;
+  countFind++;
+  ////////////// Write your code below  ////////////////////////
+  //Find the right pocket
+  unsigned int h1 = hash1(key) % m_length;
+  unsigned int h2 = hash2(key) % m_length;
+
+	unsigned int p1 = h1 / m_pocketSize;
+	unsigned int p2 = h2 / m_pocketSize;
 
 	//Find the right bit in the pocket
-	unsigned int b1 = p1 % m_pocketSize;
-	unsigned int b2 = p2 % m_pocketSize;
+	unsigned int b1 = h1 % m_pocketSize;
+	unsigned int b2 = h2 % m_pocketSize;
 
-	unsigned int mask1 = 1; 
-	mask1 <<= b1; 
-
-	unsigned int mask2 = 1;
-	mask2 <<= b2;
+	unsigned int mask1 = 1 << b1;
+	unsigned int mask2 = 1 << b2;
 
 	b1 = m_tickBook[p1] & mask1;
 	b2 = m_tickBook[p2] & mask2;
@@ -135,23 +134,30 @@ bool BloomFilter::exist(const Key& key) {
 /////////////////////////////////////////////////////////////
 
 void BloomFilter::del(const Key& key) {
-    countDelete++;
-    ////////////// Write your code below  ////////////////////////
-    //Find the right bit in the pocket
-	unsigned int p1 = hash1(key) % m_length / m_pocketSize;
-	unsigned int p2 = hash2(key) % m_length / m_pocketSize;
+  countDelete++;
+  ////////////// Write your code below  ////////////////////////
+  //Find the right pocket
+  unsigned int h1 = hash1(key) % m_length;
+  unsigned int h2 = hash2(key) % m_length;
 
-	unsigned int b1 = p1 % m_pocketSize;
-	unsigned int b2 = p2 % m_pocketSize;
+	unsigned int p1 = h1 / m_pocketSize;
+	unsigned int p2 = h2 / m_pocketSize;
 
-	unsigned int mask1 = 1; 
-	mask1 <<= b1; 
+	//Find the right bit in the pocket
+	unsigned int b1 = h1 % m_pocketSize;
+	unsigned int b2 = h2 % m_pocketSize;
 
-	unsigned int mask2 = 1;
-	mask2 <<= b2;
+	unsigned int mask1 = 1 << b1;
+	unsigned int mask2 = 1 << b2;
 
-//	m_tickBook[p1] &= ~mask1;
-//	m_tickBook[p2] &= ~mask2;
+  //This can reduce the number of false negatives generated.
+	if (rand()&1) {
+	  m_tickBook[p1] &= ~mask1;
+	}
+	else
+	{
+    m_tickBook[p2] &= ~mask2;
+	}
 
 }
 
