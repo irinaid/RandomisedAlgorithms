@@ -189,13 +189,13 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
 	else if (level == 0) return NULL;
 	return del(x, key, level);
     
-*/
-    ////////////// Write your code below  ////////////////////////
 
+    ////////////// Write your code below  ////////////////////////
+/*
     SkipListNode *n = target->nextAtLevel(level);
     if (n == NULL) {
         if (level > 0) {
-            return del(target,key,level-1);
+            del(target,key,level-1);
         }
         return NULL;
     }
@@ -218,5 +218,5 @@ SkipListNode* SkipList::del(SkipListNode* target, const Key& key, unsigned int l
 	else
 	{
 	    del(target->nextAtLevel(level),key,level);
-	}
+	}*/
 }
