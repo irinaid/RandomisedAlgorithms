@@ -17,7 +17,7 @@ using namespace std;
 class RBSTNode;
 class RBSTNode: public Key {
 public:
-    RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL) {}
+    RBSTNode(const Key& key):Key(key),m_left(NULL),m_right(NULL),m_size(0) {}
     virtual ~RBSTNode() {}
 
     string getKey() {
@@ -45,12 +45,13 @@ public:
         return this;
     }
 
+    unsigned int m_size;
+
 private:
     RBSTNode() {}
     RBSTNode* m_left;
     RBSTNode* m_right;
-    int n_left = 0;
-    int n_right = 0;
+
 };
 
 
@@ -74,7 +75,7 @@ public:
 
 private:
     RBSTNode* randomAdd(RBSTNode* target, const Key& key);
-    RBSTNode* addRoot(RBSTNode* target, const Key& key);
+    RBSTNode* addRoot(RBSTNode* target, RBSTNode* newNode);
     RBSTNode*  rightRotate(RBSTNode* target);
     RBSTNode*  leftRotate(RBSTNode* target);
 

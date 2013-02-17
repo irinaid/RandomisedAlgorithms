@@ -95,16 +95,15 @@ RBSTNode*  RBST::leftRotate(RBSTNode* target) {
     return l;
 };
 
-RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
+RBSTNode* RBST::addRoot(RBSTNode* target, RBSTNode* newNode) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-    RBSTNode *newNode = new RBSTNode(key);
     if (!target) return newNode;
-    if (key < dynamic_cast<Key&>(*target)) {
-		target->setLeft(addRoot(target->left(), key));
+    if (newNode < target) {
+		target->setLeft(addRoot(target->left(), newNode));
 		return rightRotate(target);
 	} else {
-		target->setRight(addRoot(target->right(), key));
+		target->setRight(addRoot(target->right(), newNode));
 		return leftRotate(target);
 	}
     return target;
@@ -114,62 +113,28 @@ RBSTNode* RBST::addRoot(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::randomAdd(RBSTNode* target, const Key& key) {
     countAdd++;
     ////////////// Write your code below  ////////////////////////
-
 	RBSTNode *newNode = new RBSTNode(key);
-
-    if (!target) {
-        ++m_size;
-        return newNode;
-    }
-
+	if (!target) {
+		++m_size;
+		newNode->m_size = m_size;
+		return newNode;
+	}
 	if (key == dynamic_cast<Key&>(*target)) {
-        //Already in here!
-        return target;
+		//Already in here:
+		return target;
 	}
-
-	if (key < dynamic_cast<Key&>(*target)) {
-        //Left side of the tree
-        //Find out if we want to insert here:
-        ++target->n_left;
-        if(rand() % target->n_left == 0) {
-            //Insert as this root:
-            return addRoot(target, key);
-        }
-        else
-        {
-            target->setLeft(randomAdd(target->m_left, key));
-            return target;
-        }
-	}
-	else
-    {
-        ++target->n_right;
-        if(rand() % target->n_right == 0) {
-            //Insert as this root:
-            return addRoot(target, key);
-        }
-        else
-        {
-            target->setRight(randomAdd(target->m_left, key));
-            return target;
-        }
-    }
-
-	/*int r = rand() % (target->getNodeSize() - 1) + 1;
-
+	int r = rand() % (m_size + 1) + 1;
 	if (r == 1) {
-		//here we should increase the size of newNode,
-                //but I'm not sure if it's still necessary
-		return addRoot(target, key);
+		++m_size;
+		newNode->m_size = m_size;
+		return addRoot(target, newNode);
 	}
 	if (key < dynamic_cast<Key&>(*target)) {
 		target->setLeft(randomAdd(target->left(), key));
 	} else {
 		target->setRight(randomAdd(target->right(), key));
 	}
-    //m_size++;
-    //not sure if the above should be replace or deleted
-    return target;*/
+    return target;
 };
 
 /////////////////////////////////////////////////////////////
@@ -205,76 +170,45 @@ RBSTNode* RBST::find(RBSTNode* target, const Key& key) {
 RBSTNode* RBST::del(RBSTNode* target, const Key& key) {
     countDelete++;
     ////////////// Write your code below  ////////////////////////
-/*
-    RBSTNode *parent = NULL;
-    RBSTNode *n = target;
 
-    int dir = 0;
+    if(target==NULL) {return NULL;}
 
-    while (1) {
-        int cmp = strcmp(n->c_str(),key.c_str()); //TODO
-        if(!cmp) {
-            break;
-        }
-        dir = cmp;
-        if(cmp>0) { //target bigger than key
-            parent = n;
-            n = target->left();
-            if(n == NULL) {return NULL;}
-        }
-        if(cmp<0) { //target lesser than key
-            parent = n;
-            n = target->right();
-            if(n == NULL) {return NULL;}
-        }
-    }
-
-    if(n==NULL) {return NULL;}
+	if (key < dynamic_cast<Key&>(*target)) {
+		target->setLeft(del(target->left(), key));
+		return target;
+	}
+	if (key > dynamic_cast<Key&>(*target)) {
+		target->setRight(del(target->right(), key));
+		return target;
+	}
 
     if(target->left()!=NULL&&target->right()!=NULL) {
         //Both left and right.
         if(rand()&1) {
             //Swap left
-            leftRotate(n);
-            return del(n, key);
+            RBSTNode* root = leftRotate(target);
+            del(target, key);
+		return root;
         } else {
             //Swap right
-            rightRotate(n);
-            return del(n, key);
+            RBSTNode* root = rightRotate(target);
+            del(target, key);
+		return root;
         }
     } else {
         if(target->left()!=NULL || target->right()!=NULL) {
             //Has one node:
+	    --m_size;
             if(target->left()!=NULL) {
-                if(dir>0) {
-                    parent->setLeft(target->left());
-                } else {
-                    parent->setRight(target->left());
-                }
-                return n;
+                return target->left();
             } else {
-                if(dir>0) {
-                    parent->setLeft(target->right());
-                } else {
-                    parent->setRight(target->right());
-                }
-                return n;
+                return target->right();
             }
         } else {
-            if(dir>0) {
-                parent->setLeft(NULL);
-            } else {
-                parent->setRight(NULL);
-            }
-            return n;
+	    --m_size;
+            return NULL;
         }
     }
-*/
+
 };
 
-int main(void) {
-  RBST *n = new RBST(10);
-  n->add("Test1",true);
-  n->add("Test2",true);
-  n->add("Test3",true);
-}
